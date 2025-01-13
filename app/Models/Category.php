@@ -17,7 +17,7 @@ class Category extends Model
 
     {
 
-        return $this->belongsTo(Category::class);
+        return $this->hasMany(Category::class);
 
     }
 
