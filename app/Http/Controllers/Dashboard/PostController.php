@@ -18,13 +18,9 @@ class PostController extends Controller
     {
     
        
-       
-    $post = Post::with('category')->findOrFail(1); // Si no se encuentra el post con ID 1, lanzará una excepción
-    if ($post && isset($post->category)) {
-        dd($post->category->title);
-    } else {
-        dd('Post not found or category not set');
-    }
+    $category = Post::with('category')->find(1); // Si no se encuentra el post con ID 1, lanzará una excepción 
+    $post = Post::with('category')->find(1); // Si no se encuentra el post con ID 1, lanzará una excepción
+    dd($category->category); 
 
         // $post->update(
         //     [
