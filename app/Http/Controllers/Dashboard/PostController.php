@@ -3,73 +3,38 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Post\PutRequest;
 use App\Models\Post;
+use App\Models\Category;
 use Illuminate\Http\Request;
-use PhpParser\Node\Stmt\return_;
+use App\Http\Requests\Post\StoreRequest;
+use Illuminate\Validation\Rule;
 
 class PostController extends Controller
 {
-    
-
-
-
     public function index()
-    
     {
-    
-       
-    $category = Post::with('category')->find(1); // Si no se encuentra el post con ID 1, lanzará una excepción 
-    $post = Post::with('category')->find(1); // Si no se encuentra el post con ID 1, lanzará una excepción
-    dd($category->category); 
-
-        // $post->update(
-        //     [
-        //         'title' => 'test title new',
-        //         'content' => 'test content',
-        //         'slug' => 'test slug',
-        //         'description' => 'test description',
-        //         'posted' => 'not',
-        //         'category_id' => 1,
-        //         'image' => "test image",
-        //     ]
-        //     );
-        
-        // // dd($post->title);
-        // return('1');
-    
+        $posts = Post::paginate(2); 
+        return view('dashboard.post.index', compact('posts'));
     }
-    // public function index()
-    // {
-    //  Post::create(
-    //         [
-    //             'title' => 'test title',
-    //             'content' => 'test content',
-    //             'slug' => 'test slug',
-    //             'description' => 'test description',
-    //             'posted' => 'test posted',
-    //             'category_id' => 1,
-    //             'image' => "test image",
-    //         ]
-    //         );
-        
-        
-    //     Return('1');
-    // }
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        //
+        $categories = Category::pluck("title", "id");
+        $post = new Post();
+        return view('dashboard.post.create', compact('categories', 'post'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-        //
+        Post::create($request->validated());
+        return to_route('posts.index'); // Asegúrate de que la ruta sea 'posts.index'
     }
 
     /**
@@ -77,7 +42,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        return view ('dashboard.post.show', ['post' => $post]);
     }
 
     /**
@@ -85,22 +50,43 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        $categories = Category::pluck("id", "title");
+        return view('dashboard.post.edit', compact('post', 'categories'));
+    
+    
     }
+    
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post)
+    public function update(PutRequest $request, Post $post)
     {
-        //
+        
+        $data = $request->validated();
+        
+        //image
+        if(isset ($data["image"])){
+        $data["image"] = $filename = time().'.'.$data["image"]->extension();
+         $request->image->move(public_path('uploads/posts'), $filename);
+   
+   
+    }
+        //image
+
+
+
+        $post->update($data);
+        return to_route('posts.index'); // Asegúrate de que la ruta sea 'posts.index'
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Post $post)
-    {
-        //
+        public function destroy(Post $post)
+        {
+            $post->delete(); 
+            return to_route('posts.index'); // Asegúrate de que la ruta sea 'posts.index'
+        }
     }
-}

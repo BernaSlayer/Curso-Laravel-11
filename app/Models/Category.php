@@ -15,18 +15,11 @@ class Category extends Model
         'title',
         'slug',
     ];
-
-
-
-
-
-
-
     public function posts()
 
     {
 
-        return $this->hasMany(Category::class);
+        return $this->hasMany(Post::class);
 
     }
 
