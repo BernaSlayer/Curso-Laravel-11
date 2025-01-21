@@ -5,7 +5,8 @@
 
         @include('dashboard.fragment.errors-form')
 
-      <form action="{{route("posts.store")}}" method="post">
-             @include('dashboard.fragment.form')
+      <form action="{{route("category.store")}}" method="post">
+             @csrf
+             @include('dashboard.category.form')
      </form>
 @endsection
