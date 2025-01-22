@@ -10,13 +10,25 @@
 </head>
 <body>
     
+    @session('status')
+       <h1> {{ $value }}</h1>
+    
+    @endsession
+    
+    @if (session('status'))
+     <div style="color: green; font-weight: bold; margin: 10px;">
+        {{ session('status') }}
+     </div>
+    @endif
 
-    @yield('content')
-<section>
+
+      @yield('content')
+
+    <section>
  
-  @yield('morecontent')
+      @yield('morecontent')
 
-</section>
+     </section>
         
 
 </body>

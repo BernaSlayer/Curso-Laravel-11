@@ -34,7 +34,7 @@ class PostController extends Controller
     public function store(StoreRequest $request)
     {
         Post::create($request->validated());
-        return to_route('posts.index'); // Asegúrate de que la ruta sea 'posts.index'
+        return to_route('post.index')->with('status', 'Post Created'); // Asegúrate de que la ruta sea 'posts.index'
     }
 
     /**
@@ -77,7 +77,7 @@ class PostController extends Controller
 
 
         $post->update($data);
-        return to_route('posts.index'); // Asegúrate de que la ruta sea 'posts.index'
+        return to_route('post.index')->with('status', 'Post Updated'); // Asegúrate de que la ruta sea 'posts.index'
 
     }
 
@@ -87,6 +87,6 @@ class PostController extends Controller
         public function destroy(Post $post)
         {
             $post->delete(); 
-            return to_route('posts.index'); // Asegúrate de que la ruta sea 'posts.index'
+            return to_route('post.index')->with('status', 'Post Deleted'); // Asegúrate de que la ruta sea 'posts.index'
         }
     }

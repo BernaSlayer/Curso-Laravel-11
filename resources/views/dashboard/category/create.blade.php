@@ -2,9 +2,9 @@
 
 @section('content')
 
-    @include('dashboard.fragment._errors-form')
+    @include('dashboard.fragment.errors-form')
 
    <form action="{{ route('category.store') }}" method="post">
-        @include('dashboard.category._form')
+        @include('dashboard.category.form')
    </form>
 @endsection
