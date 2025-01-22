@@ -29,14 +29,7 @@
 
             <!-- Page Content -->
             <main>
-              @if (session('status'))
-              <div style="color: green; font-weight: bold; margin: 10px;">
-                 {{ session('status') }}
-              </div>
-             @endif
-         
-         
-               @yield('content')
+                {{ $slot }}
             </main>
         </div>
     </body>
