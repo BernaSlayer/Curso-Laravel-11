@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <a class="btn btn-primary" href="{{ route('post.create') }}" target="blank">Create</a>
+    <a class="btn btn-primary" href="{{ route('post.create') }}" target="blank">Create New Post</a>
 
     <table class="table">
         <thead>

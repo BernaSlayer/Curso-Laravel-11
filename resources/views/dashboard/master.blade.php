@@ -29,15 +29,17 @@
 
             <!-- Page Content -->
             <main>
-              @if (session('status'))
-              <div style="color: green; font-weight: bold; margin: 10px;">
-                 {{ session('status') }}
-              </div>
-             @endif
+              
          
          <div class="container mx-auto">
             <div class="card card-white"> 
-              @yield('content')
+                @if (session('status'))
+              <div class="card card-success">
+                 {{ session('status') }}
+              </div>
+             @endif
+            
+                @yield('content')
             </div>
         </div>
             </main>

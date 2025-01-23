@@ -48,3 +48,6 @@
 .card-white{
   @apply bg-white;
 }
+.card-success{
+  @apply bg-green-500;
+}
