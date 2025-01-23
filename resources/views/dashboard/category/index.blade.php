@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <a class="btn btn-primary" href="{{ route('category.create') }}" target="blank">Create New Category</a>
+    <a class="btn btn-primary my-2" href="{{ route('category.create') }}" target="blank">Create New Category</a>
 
     <table class="table">
         <thead>
@@ -29,19 +29,19 @@
                         {{ $c->title }}
                     </td>
                     <td>
-                        <a class="btn btn-primary" href="{{ route('category.show',$c) }}">Show</a>
-                        <a class="btn btn-primary" href="{{ route('category.edit',$c) }}">Edit</a>
+                        <a class="btn btn-primary mt-2" href="{{ route('category.show',$c) }}">Show</a>
+                        <a class="btn btn-primary mt-2" href="{{ route('category.edit',$c) }}">Edit</a>
                         <form action="{{ route('category.destroy', $c) }}" method="post" onsubmit="return confirm('¿Estas seguro de eliminar este elemento?')">
                             @method('DELETE')
                             @csrf
-                            <button class="btn btn-danger" type="submit">Delete</button>
+                            <button class="btn btn-danger mt-2" type="submit">Delete</button>
                         </form>
                     </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
-
+<div class="mt-2"></div>
     {{ $categories->links() }}
 
 @endsection

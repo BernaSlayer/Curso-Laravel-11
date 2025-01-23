@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <a class="btn btn-primary" href="{{ route('post.create') }}" target="blank">Create New Post</a>
+    <a class="btn btn-primary my-4" href="{{ route('post.create') }}" target="blank">Create New Post</a>
 
     <table class="table">
         <thead>
@@ -41,12 +41,12 @@
                         {{ $p->category->title }}
                     </td>
                     <td>
-                        <a class="btn btn-primary" href="{{ route('post.show', $p) }}">Show</a>
-                        <a class="btn btn-primary" href="{{ route('post.edit', $p) }}">Edit</a>
+                        <a class="btn btn-primary mt-2" href="{{ route('post.show', $p) }}">Show</a>
+                        <a class="btn btn-primary mt-2" href="{{ route('post.edit', $p) }}">Edit</a>
                         <form action="{{ route('post.destroy', $p) }}" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este elemento?')">
                             @method('DELETE')
                             @csrf
-                            <button class="btn btn-danger" type="submit">Delete</button>
+                            <button class="btn btn-danger mt-2" type="submit">Delete</button>
                         </form>
                     </td>
                     
@@ -54,7 +54,7 @@
             @endforeach
         </tbody>
     </table>
-
+<div class="mt-2"></div>
     {{ $posts->links() }}
 
 @endsection

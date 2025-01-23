@@ -51,3 +51,6 @@
 .card-success{
   @apply bg-green-500;
 }
+label{
+   @apply mt-2 block  
+}
