@@ -35,8 +35,11 @@
               </div>
              @endif
          
-         
-               @yield('content')
+         <div class="container mx-auto">
+            <div class="card card-white"> 
+              @yield('content')
+            </div>
+        </div>
             </main>
         </div>
     </body>

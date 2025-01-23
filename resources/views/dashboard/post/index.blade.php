@@ -1,45 +1,60 @@
 @extends('dashboard.master')
 
 @section('content')
-    
-    <a href="{{ route('post.create') }}" target="_blank">Create New Post</a>
-    
 
+    <a class="btn btn-primary" href="{{ route('post.create') }}" target="blank">Create</a>
 
-    <table>
+    <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Posted</th>
-                <th>Category</th>
-                <th>Options</th>
+                <th>
+                    Id
+                </th>
+                <th>
+                    Title
+                </th>
+                <th>
+                    Posted
+                </th>
+                <th>
+                    Category
+                </th>
+                <th>
+                    Options
+                </th>
             </tr>
+            
         </thead>
         <tbody>
-            @foreach ($posts as $post)
+            @foreach ($posts as $p)
                 <tr>
-                    <td>{{ $post->id }}</td>
-                    <td>{{ $post->title }}</td>
-                    <td>{{ $post->posted }}</td>
-                    <td>{{ $post->category->title }}</td>
                     <td>
-    
-                        <a href="{{ route('post.edit', $post) }}">Edit</a>
-                        <a href="{{ route('post.show', $post) }}">Show</a>
-                        |
-                        <form action="{{ route('post.destroy', $post) }}" method="POST" style="display:inline;">
-                            @csrf
+                        {{ $p->id }}
+                    </td>
+                    <td>
+                        {{ $p->title }}
+                    </td>
+                    <td>
+                        {{ $p->posted }}
+                    </td>
+                    <td>
+                        {{ $p->category->title }}
+                    </td>
+                    <td>
+                        <a class="btn btn-primary" href="{{ route('post.show', $p) }}">Show</a>
+                        <a class="btn btn-primary" href="{{ route('post.edit', $p) }}">Edit</a>
+                        <form action="{{ route('post.destroy', $p) }}" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este elemento?')">
                             @method('DELETE')
-                            <button type="submit">Delete</button>
+                            @csrf
+                            <button class="btn btn-danger" type="submit">Delete</button>
                         </form>
                     </td>
+                    
                 </tr>
             @endforeach
         </tbody>
     </table>
 
     {{ $posts->links() }}
+
 @endsection
-
-

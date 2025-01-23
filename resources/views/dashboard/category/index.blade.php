@@ -1,40 +1,49 @@
 @extends('dashboard.master')
 
 @section('content')
-    
-<a href="{{ route('category.create') }}" target="_blank">Create</a>
 
+    <a class="btn btn-primary" href="{{ route('category.create') }}" target="blank">Create New Category</a>
 
-
-<table>
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Title</th>
-            <th>Options</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($categories as $category)
+    <table class="table">
+        <thead>
             <tr>
-                <td>{{ $category->id }}</td>
-                <td>{{ $category->title }}</td>
-                <td>
-
-                    <a href="{{ route('category.edit', $category) }}">Edit</a>
-                    <a href="{{ route('category.show', $category) }}">Show</a>
-                    |
-                    <form action="{{ route('category.destroy', $category) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit">Delete</button>
-                    </form>
-                </td>
+                <th>
+                    Id
+                </th>
+                <th>
+                    Title
+                </th>
+                <th>
+                    Options
+                </th>
             </tr>
-        @endforeach
-    </tbody>
-</table>
+            
+        </thead>
+        <tbody>
+            @foreach ($categories as $c)
+                <tr>
+                    <td>
+                        {{ $c->id }}
+                    </td>
+                    <td>
+                        {{ $c->title }}
+                    </td>
+                    <td>
+                        <a class="btn btn-primary" href="{{ route('category.show',$c) }}">Show</a>
+                        <a class="btn btn-primary" href="{{ route('category.edit',$c) }}">Edit</a>
+                        <form action="{{ route('category.destroy', $c) }}" method="post" onsubmit="return confirm('¿Estas seguro de eliminar este elemento?')">
+                            @method('DELETE')
+                            @csrf
+                            <button class="btn btn-danger" type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
 
-{{ $categories->links() }}
+    {{ $categories->links() }}
+
+@endsection
 
 
