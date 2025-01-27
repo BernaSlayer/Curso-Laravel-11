@@ -32,12 +32,12 @@
               
          
          <div class="container mx-auto">
-            <div class="card card-white"> 
+            <div class="card card-white my-3"> 
                 @if (session('status'))
-              <div class="card card-success">
-                 {{ session('status') }}
-              </div>
-             @endif
+                  <div class="card card-success mt-8">
+                    {{ session('status') }}
+                  </div>
+                @endif
             
                 @yield('content')
             </div>
