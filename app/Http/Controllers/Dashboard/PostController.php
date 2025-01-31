@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Post\StoreRequest;
 use Illuminate\Validation\Rule;
 
+
 class PostController extends Controller
 {
     public function index()
