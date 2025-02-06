@@ -11,6 +11,14 @@ class BlogController extends Controller
     public function index()
     {
         $posts = Post::paginate(2); // O usa paginate() si deseas paginación
+        
         return view('blog.index', compact('posts'));
     }
+      function show(Post $post)
+    {
+        
+        dd($post);
+        return view('blog.show', compact('post'));
+    }
+
 }

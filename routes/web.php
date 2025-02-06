@@ -10,6 +10,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
+Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -31,4 +34,6 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', UserAccessDashbo
 
 Route::group(['prefix' => 'blog'], function () {
     Route::get('', [BlogController::class, 'index'])->name('blog.index');
+    Route::get('detail/{post}', [BlogController::class, 'show'])->name('blog.show');
 });
+

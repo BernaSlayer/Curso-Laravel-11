@@ -29,13 +29,11 @@
 
             <!-- Page Content -->
             <main>
-                <div class="container mx-auto">
-                   <div class="card card-white mt-8"> 
-                    <h1>BLOG</h1>   
+                <div class="container mx-auto">                        
                     @yield('content')
-                   </div>
-               </div>
-                   </main>
+                </div>
+    
+            </main>
                </div>
            </body>
        </html>
