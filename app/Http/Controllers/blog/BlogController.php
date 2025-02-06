@@ -14,11 +14,10 @@ class BlogController extends Controller
         
         return view('blog.index', compact('posts'));
     }
-      function show(Post $post)
+    public function show($id)
     {
-        
-        dd($post);
-        return view('blog.show', compact('post'));
+        $post = Post::findOrFail($id);
+        return view('blog.detail', ['post' => $post]);
     }
 
 }
