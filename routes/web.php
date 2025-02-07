@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\UserAccessDashboardMiddleware;
 use App\Http\Controllers\Blog\BlogController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Dashboard\PostController;
+use App\Http\Controllers\Dashboard\CategoryController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -23,8 +25,8 @@ Route::middleware('auth')->group(function () {
 
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', UserAccessDashboardMiddleware::class]], function () {
     Route::resources([
-        'post' => App\Http\Controllers\Dashboard\PostController::class,
-        'category' => App\Http\Controllers\Dashboard\CategoryController::class,
+        'post' => PostController::class,
+        'category' => CategoryController::class,
     ]);
     Route::get('', function () {
         return view('dashboard');

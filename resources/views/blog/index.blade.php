@@ -1,14 +1,19 @@
 @extends('blog.master')
 
 @section('content')
-    <x-blog.post.index :posts='$posts'>
-        Post List
+    <div class="container mx-auto mt-5">
+        <x-blog.post.index :posts='$posts'>
+            Post List
 
-        @slot('footer')
-            Footer
-        @endslot
+            @slot('footer')
+                Footer
+            @endslot
 
-        @slot('extra', 'Extra')
+            @slot('extra', 'Extra')
+        </x-blog.post.index>
 
-    </x-blog.post.index>
+        <div class="mt-4">
+            {{ $posts->links() }}
+        </div>
+    </div>
 @endsection

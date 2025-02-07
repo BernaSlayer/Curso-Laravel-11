@@ -12,7 +12,7 @@ class BlogController extends Controller
 {
     public function index()
     {
-        $posts = Post::all();
+        $posts = Post::paginate(10); // Paginar los resultados
         return view('blog.index', ['posts' => $posts]);
     }
 
@@ -20,12 +20,11 @@ class BlogController extends Controller
     {
         $post = Post::findOrFail($id);
         $categories = Category::all();
-        $users = User::all();
+        
 
         return view('blog.detail', [
             'post' => $post,
             'categories' => $categories,
-            'users' => $users
         ]);
     }
 }
