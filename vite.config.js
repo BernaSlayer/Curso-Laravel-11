@@ -14,3 +14,4 @@ export default defineConfig({
         vue(), // 👈 Agrega el plugin de Vue
     ],
 });
+ 
