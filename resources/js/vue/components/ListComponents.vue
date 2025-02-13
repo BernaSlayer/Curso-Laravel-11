@@ -1,7 +1,10 @@
 <template>
+
+        <routerlink :to="{ name='save'}">Create</routerlink>
+
     <div>
-        <h1> Post List</h1>
-       <o-table :data="posts.data" :loading="isLoading" :current-page="currentPage">
+        <h1>Post List</h1>
+        <o-table :data="posts.data" :loading="isLoading" :current-page="currentPage">
             <o-table-column label="ID" field="id" v-slot="p">
                 {{ p.row.id }}
             </o-table-column>
@@ -17,54 +20,50 @@
             <o-table-column label="Content" field="content" v-slot="p">
                 {{ p.row.content }}
             </o-table-column>
-       </o-table>
+        </o-table>
 
-       <o-pagination
-        v-if="posts.data && posts.data.length > 0" 
-       @change="updatePage"
-       :total="posts.total"
-        v-model:curent="currentPage"
-        :range-before="2"
-        :range-after="2"
-        size="small"
-        :simple="false"
-        :rounded="true"
-        :perPage="posts.per_page"
-       
-       
-       >
-
-
-       </o-pagination>
-
+        <o-pagination
+            v-if="posts.data && posts.data.length > 0"
+            @change="updatePage"
+            :total="posts.total"
+            v-model:current="currentPage"
+            :range-before="2"
+            :range-after="2"
+            size="small"
+            :simple="false"
+            :rounded="true"
+            :per-page="posts.per_page"
+        />
     </div>
 </template>
+
 <script>
 export default {
     data() {
         return {
-            posts: [],
+            posts: {},
             isLoading: true,
             currentPage: 1,
         }
     },
 
     mounted() {
-            this.listPage()
-        
-        },
+        this.listPage(this.currentPage)
+    },
 
     methods: {
-        updatePage(){
-            console.log(this.currentPage)
+        updatePage(page) {
+            this.currentPage = page;
+            this.listPage(page);
         },
-        listPage() {
-            this.$axios.get('/api/post?page='+this.currentPage).then((res) => { 
-                this.posts = res.data
-                this.isLoading = false
-            })
+
+        listPage(page) {
+            this.isLoading = true;
+            this.$axios.get('/api/post?page=' + page).then((res) => {
+                this.posts = res.data;
+                this.isLoading = false;
+            });
         }
     },
 }
-</script> 
- 
+</script>
