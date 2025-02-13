@@ -1,7 +1,6 @@
 <template>
 
-        <routerlink :to="{ name='save'}">Create</routerlink>
-
+        <router-link :to="{ name: 'save' }">Create</router-link>
     <div>
         <h1>Post List</h1>
         <o-table :data="posts.data" :loading="isLoading" :current-page="currentPage">
@@ -17,9 +16,11 @@
             <o-table-column label="Category" field="category_id" v-slot="p">
                 {{ p.row.category_id }}
             </o-table-column>
-            <o-table-column label="Content" field="content" v-slot="p">
-                {{ p.row.content }}
+            <o-table-column label="Actions" field="category_id" v-slot="p">
+
+                <router-link :to="{ name: 'save', params:{'slug': p.row.slug} }">Edit</router-link>
             </o-table-column>
+            
         </o-table>
 
         <o-pagination

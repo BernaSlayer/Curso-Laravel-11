@@ -11,8 +11,9 @@ import axios from "axios";
 import router from "./router";
 
 const app = createApp(App);
+app.use(router);
 
-app.use(Oruga).use(router);
+app.use(Oruga);
 
 app.config.globalProperties.$axios = axios;
 window.axios = axios;

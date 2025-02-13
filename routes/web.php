@@ -40,3 +40,6 @@ Route::group(['prefix' => 'blog'], function () {
 Route::get('/vue', function () {
     return view('vue');
 });
+Route::get('/vue/save', function () {
+    return view('vue');
+});
