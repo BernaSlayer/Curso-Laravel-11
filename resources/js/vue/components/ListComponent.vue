@@ -1,70 +1,83 @@
 <template>
-
-        <router-link :to="{ name: 'save' }">Create</router-link>
     <div>
-        <h1>Post List</h1>
-        <o-table :data="posts.data" :loading="isLoading" :current-page="currentPage">
-            <o-table-column label="ID" field="id" v-slot="p">
-                {{ p.row.id }}
-            </o-table-column>
-            <o-table-column label="Title" field="title" v-slot="p">
-                {{ p.row.title }}
-            </o-table-column>
-            <o-table-column label="Posted" field="posted" v-slot="p">
-                {{ p.row.posted }}
-            </o-table-column>
-            <o-table-column label="Category" field="category_id" v-slot="p">
-                {{ p.row.category_id }}
-            </o-table-column>
-            <o-table-column label="Actions" field="category_id" v-slot="p">
-
-                <router-link :to="{ name: 'save', params:{'slug': p.row.slug} }">Edit</router-link>
-            </o-table-column>
-            
-        </o-table>
-
-        <o-pagination
-            v-if="posts.data && posts.data.length > 0"
-            @change="updatePage"
-            :total="posts.total"
-            v-model:current="currentPage"
-            :range-before="2"
-            :range-after="2"
-            size="small"
-            :simple="false"
-            :rounded="true"
-            :per-page="posts.per_page"
-        />
+      <o-field label="Title">
+        <o-input v-model="form.title" required></o-input>
+      </o-field>
+      <o-field label="Slug">
+        <o-input v-model="form.slug" required></o-input>
+      </o-field>
+      <o-field label="Content">
+        <o-input v-model="form.content" type="textarea" required></o-input>
+      </o-field>
+      <o-field label="Description">
+        <o-input v-model="form.description" type="textarea" required></o-input>
+      </o-field>
+      <o-field label="Posted">
+        <o-select v-model="form.posted" placeholder="Select an option" required>
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </o-select>
+      </o-field>
+      <o-field label="Category_id">
+        <o-select v-model="form.category_id" placeholder="Select an option" required>
+          <option disabled value="">Select a category</option>
+          <option v-for="c in categories" :key="c.id" :value="c.id">{{ c.title }}</option>
+        </o-select>
+      </o-field>
+      <o-button variant="primary" @click="send">Send</o-button>
     </div>
-</template>
-
-<script>
-export default {
+  </template>
+  
+  <script>
+  import axios from 'axios';
+  
+  export default {
     data() {
-        return {
-            posts: {},
-            isLoading: true,
-            currentPage: 1,
-        }
-    },
-
-    mounted() {
-        this.listPage(this.currentPage)
-    },
-
-    methods: {
-        updatePage(page) {
-            this.currentPage = page;
-            this.listPage(page);
+      return {
+        form: {
+          title: '',
+          slug: '',
+          content: '',
+          description: '',
+          posted: '',
+          category_id: null,
         },
-
-        listPage(page) {
-            this.isLoading = true;
-            this.$axios.get('/api/post?page=' + page).then((res) => {
-                this.posts = res.data;
-                this.isLoading = false;
-            });
-        }
+        categories: [],
+      };
     },
-}
-</script>
+    mounted() {
+      this.getCategories();
+    },
+    methods: {
+      async getCategories() {
+        try {
+          const response = await axios.get('/api/category/all');
+          this.categories = response.data;
+        } catch (error) {
+          console.error('Error al obtener categorías:', error);
+        }
+      },
+      async send() {
+        try {
+          if (!this.form.category_id) {
+            alert('Por favor, selecciona una categoría.');
+            return;
+          }
+          const response = await axios.post('/api/post', this.form);
+          console.log('Post creado:', response.data);
+        } catch (error) {
+          console.error('Error en la petición:', error);
+          if (error.response) {
+            console.error('Código de estado:', error.response.status);
+            console.error('Datos del error:', error.response.data);
+          } else if (error.request) {
+            console.error('No hubo respuesta del servidor:', error.request);
+          } else {
+            console.error('Error al configurar la petición:', error.message);
+          }
+        }
+      }
+    }
+  };
+  </script>
+  

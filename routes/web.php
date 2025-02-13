@@ -43,3 +43,6 @@ Route::get('/vue', function () {
 Route::get('/vue/save', function () {
     return view('vue');
 });
+Route::get('/vue/edit', function () {
+    return view('vue');
+});
