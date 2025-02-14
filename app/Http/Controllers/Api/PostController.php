@@ -32,6 +32,12 @@ class PostController extends Controller
         return response()->json($post);
     } 
     
+    public function slug(string $slug)
+    {
+        return response()->json(Post::where('slug', $slug)->first());
+    }
+    
+    
     public function update(PutRequest $request, Post $post)
     {
          $post->update($request->validated());
