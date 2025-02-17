@@ -37,12 +37,6 @@ Route::group(['prefix' => 'blog'], function () {
     Route::get('', [BlogController::class, 'index'])->name('blog.index');
     Route::get('detail/{post}', [BlogController::class, 'show'])->name('blog.show');
 });
-Route::get('/vue', function () {
-    return view('vue');
-});
-Route::get('/vue/save', function () {
-    return view('vue');
-});
-Route::get('/vue/edit', function () {
+Route::get('/vue/{n1?}/{n2?}', function () {
     return view('vue');
 });

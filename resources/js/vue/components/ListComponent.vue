@@ -19,7 +19,10 @@
               {{ p.row.content }}
           </o-table-column>
           <o-table-column label="Actions" v-slot="p">
-              <router-link :to="{ name: 'edit', query: { id: p.row.id } }">Edit</router-link>
+              <router-link :to="{ name: 'edit', params: { slug: p.row.slug } }">Edit</router-link>
+            <o-button variant="danger" @click="deletePost(p)">Delete</o-button>
+
+
           </o-table-column>
       </o-table>
       <o-pagination
@@ -38,29 +41,49 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data() {
-      return {
-          posts: {},
-          isLoading: true,
-          currentPage: 1,
-      };
+    return {
+      posts: {
+        data: [],
+        total: 0,
+        per_page: 10,
+      },
+      isLoading: true,
+      currentPage: 1,
+    };
   },
   mounted() {
-      this.listPage(this.currentPage);
+    this.listPage(this.currentPage);
   },
   methods: {
-      updatePage(page) {
-          this.currentPage = page;
-          this.listPage(page);
-      },
-      listPage(page) {
-          this.isLoading = true;
-          this.$axios.get('/api/post?page=' + page).then((res) => {
-              this.posts = res.data;
-              this.isLoading = false;
-          });
+    updatePage(page) {
+      this.currentPage = page;
+      this.listPage(page);
+    },
+    async listPage(page) {
+      this.isLoading = true;
+      try {
+        const res = await axios.get(`/api/post?page=${page}`);
+        this.posts = res.data;
+      } catch (error) {
+        console.error('Error al obtener los posts:', error);
+      } finally {
+        this.isLoading = false;
       }
-  }
+    },
+    deletePost(row)  { 
+        axios.delete('/api/post/' + row.row.id)
+        .then(() => {
+          this.listPage(this.currentPage);
+        })
+        .catch(error => {
+          console.error('Error al eliminar el post:', error);
+        });
+      },
+
+},
 };
 </script>

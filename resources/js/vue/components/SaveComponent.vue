@@ -38,7 +38,7 @@
       <p v-if="errors.category_id" class="error-message">{{ errors.category_id }}</p>
     </o-field>
 
-    <o-button variant="primary" @click="send">Send</o-button>
+    <o-button variant="primary" @click="send">{{ isEditing ? 'Update' : 'Send' }}</o-button>
 
     <o-notification v-if="generalError" type="danger" position="top-right">
       {{ generalError }}
@@ -50,17 +50,9 @@
 import axios from "axios";
 
 export default {
- async mounted() {
-    if (this.$forceUpdate.parms.slug) {
-      this.post = await this.axios.get("/api/post/slug"+this.$forceUpdate.parms.slug);
-      this.post = this.post.data;
-      this.iitPost();
-    }
-    this.getCategory();
-  },
   data() {
     return {
-      post:'',
+      post: null,
       form: {
         title: "",
         slug: "",
@@ -72,37 +64,78 @@ export default {
       categories: [],
       errors: {},
       generalError: "", // Mensaje de error general
+      isEditing: false,
     };
   },
 
+  async mounted() {
+    await this.getCategory();
+    if (this.$route.params.slug) {
+      await this.loadPost();
+    }
+  },
+
   methods: {
-    getCategory() {
-      axios.get("/api/category/all").then((response) => {
-        this.categories = response.data;
-      });
+    async loadPost() {
+      try {
+        console.log("Cargando post con slug:", this.$route.params.slug);
+        const response = await axios.get(`/api/post/slug/${this.$route.params.slug}`);
+        this.post = response.data;
+        console.log("Post recibido:", this.post);
+        this.isEditing = true;
+        this.fillForm();
+      } catch (error) {
+        console.error("Error al obtener el post:", error);
+      }
     },
+
+    fillForm() {
+      if (this.post) {
+        this.form.title = this.post.title || "";
+        this.form.slug = this.post.slug || "";
+        this.form.content = this.post.content || "";
+        this.form.description = this.post.description || "";
+        this.form.posted = this.post.posted || "";
+        this.form.category_id = this.post.category_id || "";
+        console.log("Formulario actualizado con:", this.form);
+      }
+    },
+    
+    async getCategory() {
+      try {
+        const response = await axios.get("/api/category/all");
+        this.categories = response.data.data || response.data; // Ajusta según el formato de la API
+        console.log("Categorías cargadas:", this.categories);
+      } catch (error) {
+        console.error("Error al obtener categorías:", error);
+      }
+    },
+
     fieldError(field) {
       return this.errors[field] ? "danger" : "";
     },
-    send() {
+
+    async send() {
       this.errors = {}; // Limpiar errores previos
       this.generalError = ""; // Limpiar mensaje de error general
 
-      axios
-        .post("/api/post", this.form)
-        .then((response) => {
+      try {
+        if (this.isEditing) {
+          const response = await axios.put(`/api/post/${this.post.id}`, this.form);
+          console.log("Post actualizado:", response.data);
+          alert("Post actualizado exitosamente");
+        } else {
+          const response = await axios.post("/api/post", this.form);
           console.log("Post creado:", response.data);
           alert("Post creado exitosamente");
-        })
-        .catch((error) => {
-          if (error.response && error.response.data.errors) {
-            // Si hay errores de validación del backend, los mostramos
-            this.errors = error.response.data.errors;
-          } else {
-            // Error general del servidor
-            this.generalError = "Ocurrió un error al guardar el post. Intenta de nuevo.";
-          }
-        });
+        }
+      } catch (error) {
+        if (error.response && error.response.data.errors) {
+          this.errors = error.response.data.errors;
+        } else {
+          this.generalError = "Ocurrió un error al guardar el post. Intenta de nuevo.";
+        }
+      }
     },
   },
 };
