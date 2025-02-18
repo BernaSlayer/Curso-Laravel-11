@@ -1,5 +1,6 @@
 import { createApp } from 'vue';
 
+import 'tailwindcss/tailwind.css';
 import '@mdi/font/css/materialdesignicons.min.css';
 import '../../css/vue.css';
 import '@oruga-ui/theme-oruga/dist/oruga.css'; // Agregar esta línea

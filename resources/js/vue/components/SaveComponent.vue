@@ -1,14 +1,14 @@
 <template>
-  <div>
+  <div class="grid grid-cols-2 grap-3">
+    
+    <div class="col-span-2">
     <o-field label="Title" :variant="fieldError('title')">
       <o-input v-model="form.title"></o-input>
       <p v-if="errors.title" class="error-message">{{ errors.title }}</p>
     </o-field>
-
-    <o-field label="Slug" :variant="fieldError('slug')">
-      <o-input v-model="form.slug"></o-input>
-      <p v-if="errors.slug" class="error-message">{{ errors.slug }}</p>
-    </o-field>
+  </div>
+    
+  
 
     <o-field label="Content" :variant="fieldError('content')">
       <o-input v-model="form.content" type="textarea"></o-input>
@@ -18,6 +18,10 @@
     <o-field label="Description" :variant="fieldError('description')">
       <o-input v-model="form.description" type="textarea"></o-input>
       <p v-if="errors.description" class="error-message">{{ errors.description }}</p>
+    </o-field>
+    <o-field label="Slug" :variant="fieldError('slug')">
+      <o-input v-model="form.slug"></o-input>
+      <p v-if="errors.slug" class="error-message">{{ errors.slug }}</p>
     </o-field>
 
     <o-field label="Posted" :variant="fieldError('posted')">
@@ -38,12 +42,14 @@
       <p v-if="errors.category_id" class="error-message">{{ errors.category_id }}</p>
     </o-field>
 
-    <o-button variant="primary" @click="send">{{ isEditing ? 'Update' : 'Send' }}</o-button>
-
     <o-notification v-if="generalError" type="danger" position="top-right">
       {{ generalError }}
     </o-notification>
   </div>
+  <div class="mt-3">
+  <o-button variant="primary" @click="send">{{ isEditing ? 'Update' : 'Send' }}</o-button>
+  </div>
+
 </template>
 
 <script>

@@ -1,8 +1,13 @@
 <template>
-  <router-link :to="{ name: 'save' }">Create</router-link>
-  <div>
-      <h1>Post List</h1>
-      <o-table :data="posts.data" :loading="isLoading" :current-page="currentPage">
+ <div>
+            <h1>Post List</h1>
+            
+            <o-button iconLeft="plus" variant="primary" @click="$router.push({name:'save'})">Create</o-button>
+                     
+          
+          <div class="mb-5"></div>
+
+          <o-table :data="posts.data" :loading="isLoading" :current-page="currentPage">
           <o-table-column label="ID" field="id" v-slot="p">
               {{ p.row.id }}
           </o-table-column>
@@ -19,11 +24,15 @@
               {{ p.row.content }}
           </o-table-column>
           <o-table-column label="Actions" v-slot="p">
-              <router-link :to="{ name: 'edit', params: { slug: p.row.slug } }">Edit</router-link>
-            <o-button variant="danger" @click="deletePost(p)">Delete</o-button>
-
-
+              <div class="flex items-center gap-6">
+            <router-link :to="{ name: 'edit', params: { slug: p.row.slug } }">
+              <o-button iconLeft="pencil" variant="primary" rounded size="small">Edit</o-button>
+            </router-link>
+            <o-button iconLeft="delete" variant="danger" size="small" rounded @click="deletePost(p)">Delete</o-button>
+        </div>
           </o-table-column>
+
+
       </o-table>
       <o-pagination
           v-if="posts.data && posts.data.length > 0"
